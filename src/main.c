@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 	height = min_h;
 	if (argc >= 3)
 		get_res(argv, &width, &height);
-	if (!game_init(&game, width, height))
+	if (!game_init(&game, "2dphobe", width, height))
 		cleanexit(-1);
 	cleanexit(0);
 }

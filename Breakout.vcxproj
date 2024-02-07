@@ -23,6 +23,7 @@
     <ClCompile Include="src\engine\collision.c" />
     <ClCompile Include="src\engine\text.c" />
     <ClCompile Include="src\game.c" />
+    <ClCompile Include="src\level.c" />
     <ClCompile Include="src\engine\obj.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\engine\renderer\renderer.c" />
@@ -208,9 +209,12 @@
     <ClInclude Include="include\KHR\khrplatform.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\utils\print.h" />
+    <ClInclude Include="src\ball.h" />
+    <ClInclude Include="src\brick.h" />
     <ClInclude Include="src\engine\collision.h" />
     <ClInclude Include="src\engine\text.h" />
     <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\level.h" />
     <ClInclude Include="src\engine\obj.h" />
     <ClInclude Include="src\engine\renderer\renderer.h" />
     <ClInclude Include="src\engine\renderer\shader.h" />
@@ -225,10 +229,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\fonts\font.png" />
+    <Image Include="data\textures\ball.png" />
+    <Image Include="data\textures\non_solid.png" />
+    <Image Include="data\textures\paddle.png" />
+    <Image Include="data\textures\solid.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="data\levels\default.lvl" />
     <None Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -237,8 +246,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4809ab3b-a800-40f3-b4cc-29a588bcb8ff}</ProjectGuid>
-    <RootNamespace>_2dphobe</RootNamespace>
+    <ProjectGuid>{d6b369b6-c775-4988-b6c1-db1f1df5c615}</ProjectGuid>
+    <RootNamespace>Breakout</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

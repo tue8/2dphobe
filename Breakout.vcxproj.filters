@@ -36,6 +36,9 @@
     <ClCompile Include="src\engine\obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\level.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\engine\collision.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\KHR\khrplatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\cglm\call\clipspace\ortho_lh_no.h">
@@ -593,10 +599,19 @@
     <ClInclude Include="include\utils\bool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\utils\assert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\utils\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\brick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\collision.h">
@@ -614,7 +629,25 @@
     <Library Include="lib\cglm.lib" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="data\textures\paddle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\textures\font.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\fonts\font_new.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\textures\non_solid.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\textures\solid.png">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="data\fonts\font.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\textures\ball.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -622,6 +655,7 @@
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="README.txt" />
+    <None Include="data\levels\default.lvl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
