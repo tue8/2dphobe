@@ -16,6 +16,7 @@ typedef struct
 	int fps;
 	int keys[1024];
 	int width, height;
+	game_data data;
 } game_t;
 
 /***/
