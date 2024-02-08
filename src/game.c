@@ -7,14 +7,10 @@ const char *ball_tex_dir = "\\Breakout\\data\\textures\\ball.png";
 const char *non_solid_tex_dir = "\\Breakout\\data\\textures\\non_solid.png";
 const char *solid_tex_dir = "\\Breakout\\data\\textures\\solid.png";
 const char *paddle_tex_dir = "\\Breakout\\data\\textures\\paddle.png";
+
 const char *lvl_dir = "\\Breakout\\data\\levels\\default.lvl";
 
 game_data G;
-
-const char *play_msg = "Press Enter to play";
-
-const int char_size = 20.f;
-const int char_margin = 25.f;
 
 static void init_ball_data()
 {
@@ -32,6 +28,7 @@ static void init_player_data(int width, int height)
 	G.player_data.player_speed = 400.f;
 	G.player_data.player_pos_x = (float)width / 2.f - G.player_data.player_width / 2.f;
 	G.player_data.player_pos_y = (float)height - G.player_data.player_height;
+	G.player_data.shoot_dir = TRUE; /* true = right, false = left */
 }
 
 static void init_collision_data()
@@ -50,6 +47,12 @@ static int init_level(unsigned int solid_tex, unsigned int non_solid_tex,
 	if (!level_load_file(&(G.level), &(G.renderer), lvl_dir, width, height / 2))
 		return FALSE;
 	return TRUE;
+}
+
+static void init_text_data()
+{
+	G.text_data.char_size = 10.f;
+	G.text_data.char_margin = 15.f;
 }
 
 int game_init(game_t *game_p, char *name, int width, int height)
@@ -74,6 +77,7 @@ int game_init(game_t *game_p, char *name, int width, int height)
 	ASSERT(text_init(&(G.renderer)), "Could not initialize text renderer\n");
 	ASSERT(init_level(solid_tex, non_solid_tex, width, height), "Could not initialize level\n");
 
+	init_text_data();
 	init_collision_data();
 	init_player_data(width, height);
 	init_ball_data();
@@ -93,36 +97,41 @@ int game_init(game_t *game_p, char *name, int width, int height)
 
 static int reset_ball_pos()
 {
-	vec3 v_plrenderer_pos;
+	vec3 v_player_pos;
 	G.ball.stucked = TRUE;
-	obj_get_pos(&(G.player), &(G.renderer), v_plrenderer_pos);
+	obj_get_pos(&(G.player), &(G.renderer), v_player_pos);
 	obj_set_pos(&(G.ball.base), &(G.renderer),
-		(vec3) { v_plrenderer_pos[v_x] + (G.player_data.player_width / 2.f - G.ball.radius / 2.f),
-				 v_plrenderer_pos[v_y] + (-G.ball.radius * 2.f), 0.f});
+		(vec3) { v_player_pos[v_x] + (G.player_data.player_width / 2.f - G.ball.radius / 2.f),
+				 v_player_pos[v_y] + (-G.ball.radius * 2.f), 0.f});
 	return TRUE;
 }
 
-int game_process_input(game_t *game_p, keyinp_data_t *keyinp_p, float dt)
+int game_process_input(game_t *game_p, keyinp_data_t *keyinp, float dt)
 {
-	if (keyinp_p->key == GLFW_KEY_ENTER && G.state != GAME_ACTIVE)
+	if (keyinp[GLFW_KEY_ENTER].is_pressed && G.state != GAME_ACTIVE)
 		G.state = GAME_ACTIVE;
 
 	if (G.state == GAME_ACTIVE)
 	{
-		vec3 v_plrenderer_pos;
+		vec3 v_player_pos;
 
-		obj_get_pos(&(G.player), &(G.renderer), v_plrenderer_pos);
-		if (keyinp_p->key == GLFW_KEY_A && keyinp_p->is_hold)
-			if (v_plrenderer_pos[v_x] >= 0.f)
-				v_plrenderer_pos[v_x] -= G.player_data.player_speed * dt;
-		if (keyinp_p->key == GLFW_KEY_D && keyinp_p->is_hold)
-			if (v_plrenderer_pos[v_x] <= G.renderer.width - G.player_data.player_width)
-				v_plrenderer_pos[v_x] += G.player_data.player_speed * dt;
-		if (keyinp_p->key == GLFW_KEY_SPACE && keyinp_p->is_hold)
+		obj_get_pos(&(G.player), &(G.renderer), v_player_pos);
+		if (keyinp[GLFW_KEY_A].is_held)
+			if (v_player_pos[v_x] >= 0.f)
+				v_player_pos[v_x] -= G.player_data.player_speed * dt;
+		if (keyinp[GLFW_KEY_D].is_held)
+			if (v_player_pos[v_x] <= G.renderer.width - G.player_data.player_width)
+				v_player_pos[v_x] += G.player_data.player_speed * dt;
+		if (keyinp[GLFW_KEY_SPACE].is_pressed)
 			G.ball.stucked = FALSE;
+		if (keyinp[GLFW_KEY_C].is_pressed && G.ball.stucked)
+		{
+			G.player_data.shoot_dir = !G.player_data.shoot_dir;
+			G.ball.v_velocity[v_x] *= -1;
+		}
 
 		obj_set_pos(&(G.player), &(G.renderer),
-			(vec3) { v_plrenderer_pos[v_x], v_plrenderer_pos[v_y], 0.f });
+			(vec3) { v_player_pos[v_x], v_player_pos[v_y], 0.f });
 		if (G.ball.stucked)
 			reset_ball_pos();
 		fflush(stdout);
@@ -156,7 +165,8 @@ static void move_ball(float dt)
 	if (v_ball_pos[v_y] > G.renderer.height)
 	{
 		reset_ball_pos();
-		G.ball.v_velocity[v_x] *= (G.ball.v_velocity[v_x] < 0) ? -1 : 1;
+		G.ball.v_velocity[v_x] *= ((G.player_data.shoot_dir && G.ball.v_velocity[v_x] < 0) ||
+								   (!G.player_data.shoot_dir && G.ball.v_velocity[v_x] > 0)) ? -1 : 1;
 		G.ball.v_velocity[v_y] *= -1;
 	}
 }
@@ -255,8 +265,12 @@ int game_update(game_t *game_p, float dt)
 
 int game_render(game_t *game_p)
 {
+	/* hardcoded so yeah, pretty fucking terrible */
 	char fps[10];
 	char draw_call[15];
+	char playmsg[30];
+	char rdir_msg[14];
+	char ldir_msg[13];
 
 	switch (G.state)
 	{
@@ -271,13 +285,24 @@ int game_render(game_t *game_p)
 		}
 		obj_draw(&(G.player), &(G.renderer));
 		obj_draw(&(G.ball.base), &(G.renderer));
+
+		sprintf(rdir_msg, "%c Shoot right", (G.player_data.shoot_dir) ? '*' : ' ');
+		sprintf(ldir_msg, "%c Shoot left", (!G.player_data.shoot_dir) ? '*' : ' ');
+		render_text(&(G.renderer), rdir_msg, (G.player_data.shoot_dir) ? TEXT_RED : TEXT_WHITE,
+			(vec3) { 5.f, game_p->height - G.text_data.char_size * 2, 0.f },
+			(vec3) { G.text_data.char_size, G.text_data.char_size, G.text_data.char_margin });
+		render_text(&(G.renderer), ldir_msg, (!G.player_data.shoot_dir) ? TEXT_RED : TEXT_WHITE,
+			(vec3) { 5.f, game_p->height - G.text_data.char_size, 0.f },
+			(vec3) { G.text_data.char_size, G.text_data.char_size, G.text_data.char_margin });
 		break;
 	case GAME_START:
 	case GAME_WIN:
-		render_text(&(G.renderer), play_msg, TEXT_WHITE,
-			(vec3) { game_p->width / 2 - (strlen(play_msg) * char_size) / 2,
+		sprintf(playmsg, "%s Press Enter to play!", (G.state == GAME_WIN) ? "You won!" : "");
+
+		render_text(&(G.renderer), playmsg, TEXT_WHITE,
+			(vec3) { game_p->width / 2 - (strlen(playmsg) * G.text_data.char_size) / 2,
 					 game_p->height / 2, 0.f },
-			(vec3) { char_size, char_size, char_margin });
+			(vec3) { G.text_data.char_size, G.text_data.char_size, G.text_data.char_margin });
 		break;
 	}
 
@@ -285,9 +310,11 @@ int game_render(game_t *game_p)
 	sprintf(draw_call, "Draw calls: %d", G.renderer.dbg.draw_count + 1);
 
 	render_text(&(G.renderer), fps, TEXT_WHITE,
-		(vec3) { 5.f, 5.f, 0.f }, (vec3) { char_size, char_size, char_margin });
+		(vec3) { 5.f, 5.f, 0.f },
+		(vec3) { G.text_data.char_size, G.text_data.char_size, G.text_data.char_margin });
 	render_text(&(G.renderer), draw_call, TEXT_WHITE,
-		(vec3) { 5.f, 5.f + char_size, 0.f }, (vec3) { char_size, char_size, char_margin });
+		(vec3) { 5.f, 5.f + G.text_data.char_size, 0.f },
+		(vec3) { G.text_data.char_size, G.text_data.char_size, G.text_data.char_margin });
 
 	renderer_draw(&(G.renderer));
 	renderer_end_loop(&(G.renderer));

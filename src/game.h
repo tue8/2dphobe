@@ -10,8 +10,8 @@
 
 typedef struct
 {
-	int key;
-	int is_hold;
+	int is_held;
+	int is_pressed;
 } keyinp_data_t;
 
 typedef struct
@@ -37,12 +37,19 @@ typedef struct
 	float player_speed;
 	float player_pos_x;
 	float player_pos_y;
+	float shoot_dir;
 } g_player_data;
 
 typedef struct
 {
 	float ball_speed;
 } g_ball_data;
+
+typedef struct
+{
+	int char_size;
+	int char_margin;
+} g_text_data;
 
 typedef struct
 {
@@ -59,6 +66,8 @@ typedef struct
 
 	collision_data *bricks_col_data;
 	collision_data player_col_data;
+
+	g_text_data text_data;
 } game_data;
 
 /***/

@@ -10,7 +10,6 @@ static void decompose_t(mat4 m, vec4 t)
 
 void obj_create(obj_t *obj_p, renderer_t *renderer_p, vec3 v_pos, vec3 v_scale, unsigned int tex_id)
 {
-	int curr_vert;
 	glm_mat4_identity(obj_p->model);
 	glm_translate(obj_p->model, BREAK_VEC3(v_pos));
 	glm_scale(obj_p->model, BREAK_VEC3(v_scale));
@@ -19,7 +18,7 @@ void obj_create(obj_t *obj_p, renderer_t *renderer_p, vec3 v_pos, vec3 v_scale, 
 
 void obj_draw(obj_t *obj_p, renderer_t *renderer_p)
 {
-	renderer_push_model(renderer_p, obj_p->model, &(obj_p->model_index));
+	renderer_add_local_mat(renderer_p, obj_p->model, &(obj_p->model_index));
 	renderer_draw_quad(renderer_p, obj_p->tex_id, obj_p->model_index);
 }
 

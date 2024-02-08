@@ -17,7 +17,6 @@ int check_collision(renderer_t *renderer_p, obj_t *a, obj_t *b, collision_data *
 	vec3 b_scale;
 	int x_overlap;
 	int y_overlap;
-	int precollide;
 
 	obj_get_pos(a, renderer_p, a_pos);
 	obj_get_pos(b, renderer_p, b_pos);

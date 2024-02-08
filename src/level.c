@@ -75,7 +75,7 @@ static int level_load(level_t *level_p, renderer_t *renderer_p, char *src, int w
         curr_line = next_line ? (next_line + 1) : NULL;
         col++;
     }
-    // printf("ROW: %d, COL: %d\n", row, col);
+    printf_dbg("ROW: %d, COL: %d\n", row, col);
     free(curr_line);
     level_p->brick_count = row * col;
     level_p->bricks = malloc(sizeof(brick_t) * level_p->brick_count);
