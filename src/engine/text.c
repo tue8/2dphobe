@@ -94,7 +94,7 @@ void render_text(renderer_t *renderer_p, char *str, Rvec3_t Rv_color, vec3 v_pos
 		glm_translate(model, (vec3) { v_pos[v_x] + (v_scale[v_z] * i), v_pos[v_y], 0.f });
 		glm_scale(model, BREAK_VEC3(v_scale));
 
-		renderer_push_model(renderer_p, model, &model_index);
+		renderer_add_local_mat(renderer_p, model, &model_index);
 		renderer_draw_quadc(renderer_p, find_charcoords(*(str + i)), Rv_color, font_tex_id, model_index);
 	}
 }

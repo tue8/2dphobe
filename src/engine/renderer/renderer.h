@@ -27,15 +27,15 @@ typedef struct
 	Rvec3_t color;
 	Rvec2_t tex_coord;
 	float tex_index;
-	float model_index;
+	float local_mat_index;
 } vertex_t;
 
 typedef struct
 {
 	unsigned int ssbo;
-	mat4 *model_arr;
-	int model_arr_size;
-	int model_sp;
+	mat4 *local_mat_arr;
+	int local_mat_arr_size;
+	int local_mat_sp;
 	mat4 view, proj;
 } mvp_data;
 
@@ -74,7 +74,7 @@ int renderer_init(renderer_t *, int, int);
 void renderer_draw_quad(renderer_t *, unsigned int, unsigned int);
 void renderer_draw_quadc(renderer_t *, texcoords_data, Rvec3_t, unsigned int, unsigned int);
 int renderer_load_tex(renderer_t *, unsigned int *, const char *);
-void renderer_push_model(renderer_t *, mat4, int *);
+void renderer_add_local_mat(renderer_t *, mat4, int *);
 void renderer_draw(renderer_t *);
 void renderer_flush(renderer_t *);
 void renderer_end_loop(renderer_t *);

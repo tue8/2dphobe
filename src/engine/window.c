@@ -2,18 +2,22 @@
 #include "utils/utils.h"
 #include <glad/glad.h>
 
-keyinp_data_t keyinp;
+keyinp_data_t keyinp[1024];
+int queued_key;
 float delta_time;
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
 	if (key >= 0 && key < 1024)
 	{
+		queued_key = key;
 		if (action == GLFW_PRESS)
-			keyinp.is_hold = TRUE;
+		{
+			keyinp[key].is_held = TRUE;
+			keyinp[key].is_pressed = TRUE;
+		}
 		else if (action == GLFW_RELEASE)
-			keyinp.is_hold = FALSE;
-		keyinp.key = key;
+			keyinp[key].is_held = FALSE;
 	}
 }
 
@@ -53,6 +57,7 @@ int window_startgame(game_t *game_p, GLFWwindow *window)
 	last_frame = 0.f;
 	last_sec_frame = glfwGetTime();
 	game_p->fps = 0;
+	queued_key = -1;
 	while (!glfwWindowShouldClose(window))
 	{
 		double curr_frame = glfwGetTime();
@@ -69,8 +74,10 @@ int window_startgame(game_t *game_p, GLFWwindow *window)
 			frame++;
 
 		glfwPollEvents();
-		if (!game_process_input(game_p, &keyinp, delta_time))
+		if (!game_process_input(game_p, keyinp, delta_time))
 			return FALSE;
+		if (queued_key != -1)
+			keyinp[queued_key].is_pressed = FALSE;
 		if (!game_update(game_p, delta_time))
 			return FALSE;
 		glClearColor(0.f, 0.f, 0.8f, 1.0f);
