@@ -29,15 +29,29 @@ static void renderer_init_vao(renderer_t *renderer_p)
 	glBufferData(GL_ARRAY_BUFFER, renderer_p->vert.vert_size, NULL, GL_DYNAMIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), offsetof(vertex_t, ndc));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
+		sizeof(vertex_t),
+		(void *)offsetof(vertex_t, ndc));
+
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_t), offsetof(vertex_t, tex_coord));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+		sizeof(vertex_t),
+		(void *)offsetof(vertex_t, tex_coord));
+
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(vertex_t), offsetof(vertex_t, tex_index));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE,
+		sizeof(vertex_t),
+		(void *)offsetof(vertex_t, tex_index));
+
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(vertex_t), offsetof(vertex_t, local_mat_index));
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE,
+		sizeof(vertex_t),
+		(void *)offsetof(vertex_t, local_mat_index));
+
 	glEnableVertexAttribArray(4);
-	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), offsetof(vertex_t, color));
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE,
+		sizeof(vertex_t),
+		(void *)offsetof(vertex_t, color));
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -57,7 +71,8 @@ static void renderer_init_mvp(renderer_t *renderer_p)
 
 	glm_mat4_identity(renderer_p->mvp.view);
 	glm_mat4_identity(renderer_p->mvp.proj);
-	glm_ortho(0.f, renderer_p->width, renderer_p->height, 0.f, -1.f, 1.f, renderer_p->mvp.proj);
+	glm_ortho(0.f, (float)renderer_p->width, (float)renderer_p->height,
+					0.f, -1.f, 1.f, renderer_p->mvp.proj);
 }
 
 static void renderer_init_vertices(renderer_t *renderer_p)
@@ -163,7 +178,7 @@ static float get_tex_index(renderer_t *renderer_p, unsigned int tex_id)
 	{
 		if (*(renderer_p->texs + i) == tex_id)
 		{
-			tex_index = i;
+			tex_index = (float)i;
 			tex_find = 1;
 			break;
 		}
@@ -174,15 +189,14 @@ static float get_tex_index(renderer_t *renderer_p, unsigned int tex_id)
 		if (renderer_p->tex_count > renderer_p->mvars.max_tex - 1)
 			renderer_draw(renderer_p);
 		*(renderer_p->texs + renderer_p->tex_count) = tex_id;
-		tex_index = renderer_p->tex_count++;
+		tex_index = (float)renderer_p->tex_count++;
 	}
 
 	return tex_index;
 }
 
 static void fill_vertex_data(vertex_t *quad, int i, Rvec3_t ndc, Rvec2_t tex_coord,
-							Rvec3_t color, unsigned int tex_index, 
-							unsigned int local_mat_index)
+							Rvec3_t color, float tex_index, float local_mat_index)
 {
 	quad[i].ndc = ndc;
 	quad[i].tex_coord = tex_coord;
@@ -192,7 +206,7 @@ static void fill_vertex_data(vertex_t *quad, int i, Rvec3_t ndc, Rvec2_t tex_coo
 }
 
 static void fill_quad_data(vertex_t *quad, texcoords_data tex_coords, Rvec3_t color,
-										  unsigned int tex_index, unsigned int local_mat_index)
+										  float tex_index, float local_mat_index)
 {
 	fill_vertex_data(quad, 0,
 		(Rvec3_t) { 0.f, 0.f, 0.f },
@@ -236,7 +250,7 @@ void renderer_draw_quadc(renderer_t *renderer_p, texcoords_data tex_coords, Rvec
 	float tex_index;
 
 	tex_index = get_tex_index(renderer_p, tex_id);
-	fill_quad_data(&res, tex_coords, color, tex_index, local_mat_index);
+	fill_quad_data(res, tex_coords, color, tex_index, (float)local_mat_index);
 	renderer_add_quad(renderer_p, res);
 }
 

@@ -51,8 +51,8 @@ static int init_level(unsigned int solid_tex, unsigned int non_solid_tex,
 
 static void init_text_data()
 {
-	G.text_data.char_size = 10.f;
-	G.text_data.char_margin = 15.f;
+	G.text_data.char_size = 15.f;
+	G.text_data.char_margin = 20.f;
 }
 
 int game_init(game_t *game_p, char *name, int width, int height)
@@ -301,7 +301,7 @@ int game_render(game_t *game_p)
 
 		render_text(&(G.renderer), playmsg, TEXT_WHITE,
 			(vec3) { game_p->width / 2 - (strlen(playmsg) * G.text_data.char_size) / 2,
-					 game_p->height / 2, 0.f },
+					 (float)game_p->height / 2, 0.f },
 			(vec3) { G.text_data.char_size, G.text_data.char_size, G.text_data.char_margin });
 		break;
 	}

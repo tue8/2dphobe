@@ -36,6 +36,7 @@ static int process_level(level_t *level_p, renderer_t *renderer_p, char *src, in
                 int solid;
                 solid = (brick_type == '2') ? TRUE : FALSE;
 
+                printf_dbg("%p\n", renderer_p);
                 obj_create(&(level_p->bricks[brick_count].base), renderer_p,
                     (vec3) { brick_width * x, brick_height * y, 0.f },
                     (vec3) { brick_width, brick_height, 0.f },

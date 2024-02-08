@@ -47,8 +47,8 @@ typedef struct
 
 typedef struct
 {
-	int char_size;
-	int char_margin;
+	float char_size;
+	float char_margin;
 } g_text_data;
 
 typedef struct
