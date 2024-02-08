@@ -25,7 +25,7 @@ void obj_draw(obj_t *obj_p, renderer_t *renderer_p)
 void obj_get_pos(obj_t *obj_p, renderer_t *renderer_p, vec3 v_pos)
 {
 	vec4 pos_v4;
-	decompose_t(&(obj_p->local_mat), &pos_v4);
+	decompose_t(obj_p->local_mat, pos_v4);
 	glm_vec3(pos_v4, v_pos);
 }
 

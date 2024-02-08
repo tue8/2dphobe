@@ -85,7 +85,7 @@ static texcoords_data find_charcoords(char c)
 
 void render_text(renderer_t *renderer_p, char *str, Rvec3_t Rv_color, vec3 v_pos, vec3 v_scale)
 {
-	for (int i = 0; i < strlen(str); ++i)
+	for (size_t i = 0; i < strlen(str); ++i)
 	{
 		mat4 model;
 		int model_index;

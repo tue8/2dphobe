@@ -48,19 +48,19 @@ int window_init(GLFWwindow **window_p, char *name, unsigned int width, unsigned 
 
 int window_startgame(game_t *game_p, GLFWwindow *window)
 {
-	double last_frame;
-	double last_sec_frame;
+	float last_frame;
+	float last_sec_frame;
 	int frame;
 	
 	frame = 0;
 	delta_time = 0.f;
 	last_frame = 0.f;
-	last_sec_frame = glfwGetTime();
+	last_sec_frame = (float)glfwGetTime();
 	game_p->fps = 0;
 	queued_key = -1;
 	while (!glfwWindowShouldClose(window))
 	{
-		double curr_frame = glfwGetTime();
+		float curr_frame = (float)glfwGetTime();
 		delta_time = curr_frame - last_frame;
 		last_frame = curr_frame;
 
