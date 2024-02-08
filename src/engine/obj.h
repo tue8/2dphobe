@@ -11,9 +11,9 @@
 
 typedef struct
 {
-	mat4 model;
+	mat4 local_mat;
 	unsigned int tex_id;
-	unsigned int model_index;
+	unsigned int local_mat_index;
 } obj_t;
 
 void obj_create(obj_t *, renderer_t *, vec3, vec3, unsigned int);
