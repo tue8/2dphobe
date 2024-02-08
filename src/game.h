@@ -8,7 +8,8 @@
 typedef struct
 {
 	int key;
-	int is_hold;
+	int is_held;
+	int is_pressed;
 } keyinp_data_t;
 
 typedef struct
