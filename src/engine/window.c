@@ -43,6 +43,7 @@ int window_init(GLFWwindow **window_p, char *name, unsigned int width, unsigned 
 	ASSERT(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Failed to initialize GLAD\n");
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH);
 	return TRUE;
 }
 

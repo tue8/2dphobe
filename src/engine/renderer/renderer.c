@@ -6,7 +6,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#define MAX_QUAD 1000
+#define MAX_QUAD 3000
 
 static void renderer_get_max(renderer_t *renderer_p)
 {
