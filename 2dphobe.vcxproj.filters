@@ -42,6 +42,9 @@
     <ClCompile Include="src\engine\text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\utils\utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\glad\glad.h">

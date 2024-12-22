@@ -19,7 +19,6 @@ typedef struct
 
 unsigned int font_tex_id;
 const char_texcoords_data char_texcoords[CHAR_COUNT];
-const char *font_tex_dir = "\\Breakout\\data\\fonts\\font.png";
 
 static void setup_row(int *i, char c, int char_range, float x_offset, float y_offset)
 {
@@ -70,7 +69,11 @@ int text_init(renderer_t *renderer_p)
 	setup_char(&row_index, '+', 540.f, 37.f);
 	setup_char(&row_index, '@', 556.f, 37.f);
 
-	if (!renderer_load_tex(renderer_p, &font_tex_id, font_tex_dir))
+	char *font_tex_dir = working_dir("\\data\\fonts\\font.png");
+	int res = renderer_load_tex(renderer_p, &font_tex_id, font_tex_dir);
+	free(font_tex_dir);
+
+	if (!res)
 		return FALSE;
 	return TRUE;
 }
@@ -83,7 +86,7 @@ static texcoords_data find_charcoords(char c)
 	return (texcoords_data) SET_COORDS(0.f, 0.f);
 }
 
-void render_text(renderer_t *renderer_p, char *str, Rvec3_t Rv_color, vec3 v_pos, vec3 v_scale)
+void render_text(renderer_t *renderer_p, char *str, phobe_vec3 color, phobe_vec3 pos, phobe_vec3 scale)
 {
 	for (size_t i = 0; i < strlen(str); ++i)
 	{
@@ -91,10 +94,14 @@ void render_text(renderer_t *renderer_p, char *str, Rvec3_t Rv_color, vec3 v_pos
 		int model_index;
 
 		glm_mat4_identity(model);
-		glm_translate(model, (vec3) { v_pos[v_x] + (v_scale[v_z] * i), v_pos[v_y], 0.f });
-		glm_scale(model, BREAK_VEC3(v_scale));
+		glm_translate(model, (vec3) { pos.x + (scale.z * i), pos.y, 0.f });
+		glm_scale(model, (vec3) { scale.x, scale.y, scale.z });
 
 		renderer_add_local_mat(renderer_p, model, &model_index);
-		renderer_draw_quadc(renderer_p, find_charcoords(*(str + i)), Rv_color, font_tex_id, model_index);
+		renderer_draw_quadc(renderer_p,
+												find_charcoords(*(str + i)),
+												(Rvec3_t) { color.x, color.y, color.z },
+												font_tex_id,
+												model_index);
 	}
 }

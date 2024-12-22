@@ -71,7 +71,7 @@ typedef struct
 } renderer_t;
 
 int renderer_init(renderer_t *, int, int);
-void renderer_draw_quad(renderer_t *, unsigned int, unsigned int);
+void renderer_draw_quad(renderer_t *, Rvec3_t, unsigned int, unsigned int);
 void renderer_draw_quadc(renderer_t *, texcoords_data, Rvec3_t, unsigned int, unsigned int);
 int renderer_load_tex(renderer_t *, unsigned int *, const char *);
 void renderer_add_local_mat(renderer_t *, mat4, int *);

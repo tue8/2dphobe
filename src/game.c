@@ -5,16 +5,45 @@
 
 const int char_size = 20.f;
 const int char_margin = 25.f;
+const int quad_size = 5;
+
+GLFWwindow *window;
+renderer_t renderer;
+obj_t *quads;
+int quad_count = 0;
 
 int game_init(game_t *game_p, int width, int height)
 {
 	game_p->width = width;
 	game_p->height = height;
 
-	ASSERT(window_init(&(game_p->data.window), "2dphobe", width, height), "Could not initialize window\n");
-	ASSERT(renderer_init(&(game_p->data.renderer), width, height), "Could not initialize renderer\n");
-	ASSERT(text_init(&(game_p->data.renderer)), "Could not initialize text renderer\n");
-	ASSERT(window_startgame(game_p, game_p->data.window), "error n shi\n");
+	ASSERT(window_init(&window, "2dphobe", width, height), "Could not initialize window\n");
+	ASSERT(renderer_init(&renderer, width, height), "Could not initialize renderer\n");
+	ASSERT(text_init(&renderer), "Could not initialize text renderer\n");
+
+	unsigned int default_tex_id;
+	char *default_tex_dir = working_dir("\\data\\textures\\default.png");
+	int res = renderer_load_tex(&renderer, &default_tex_id, default_tex_dir);
+	free(default_tex_dir);
+
+	if (!res)
+		return FALSE;
+
+	quads = (obj_t *)malloc(sizeof(obj_t) * (width * height) / quad_size);
+	for (float i = 0.f; i < width; i += quad_size)
+	{
+		for (float j = 0.f; j < height; j += quad_size)
+		{
+			obj_t quad;
+			phobe_vec3 pos = { i, j, 0.f };
+			phobe_vec3 size = { quad_size, quad_size, 0.f };
+			phobe_vec3 color = { 0.f, 1.f, 0.f };
+			obj_create(&quad, &renderer, pos, size, color, default_tex_id);
+			quads[quad_count++] = quad;
+		}
+	}
+
+	ASSERT(window_startgame(game_p, window), "error n shi\n");
 	return TRUE;
 }
 
@@ -28,26 +57,49 @@ int game_update(game_t *game_p, float dt)
 	return TRUE;
 }
 
+static void render_text_shadow(renderer_t *renderer, char *str,
+															 phobe_vec3 pos, phobe_vec3 scale)
+{
+	render_text(renderer,
+							str,
+							TEXT_BLACK,
+							(phobe_vec3) {pos.x + (scale.x / 5.f),
+														pos.y + (scale.y / 5.f),
+														pos.z },
+							scale);
+	render_text(renderer, str, TEXT_WHITE, pos, scale);
+}
+
 int game_render(game_t *game_p)
 {
+	for (int i = 0; i < quad_count; i++)
+	{
+		float r = (rand() % (100 + 1)) / 100.f;
+		float g = (rand() % (100 + 1)) / 100.f;
+		float b = (rand() % (100 + 1)) / 100.f;
+		quads[i].color = (phobe_vec3){ r, g, b };
+		obj_draw(&quads[i], &renderer);
+	}
+
 	char fps[10];
 	char draw_call[15];
 
 	sprintf(fps, "FPS: %d", game_p->fps);
-	sprintf(draw_call, "Draw calls: %d", game_p->data.renderer.dbg.draw_count + 1);
+	sprintf(draw_call, "Draw calls: %d", renderer.dbg.draw_count + 1);
 
-	render_text(&(game_p->data.renderer), fps, TEXT_WHITE,
-		(vec3) { 5.f, 5.f, 0.f }, (vec3) { char_size, char_size, char_margin });
-	render_text(&(game_p->data.renderer), draw_call, TEXT_WHITE,
-		(vec3) { 5.f, 5.f + char_size, 0.f }, (vec3) { char_size, char_size, char_margin });
+	render_text_shadow(&renderer, fps,
+		(phobe_vec3) { 5.f, 5.f, 0.f }, (phobe_vec3) { char_size, char_size, char_margin });
+	render_text_shadow(&renderer, draw_call,
+		(phobe_vec3) { 5.f, 5.f + char_size, 0.f }, (phobe_vec3) { char_size, char_size, char_margin });
 
-	renderer_draw(&(game_p->data.renderer));
-	renderer_end_loop(&(game_p->data.renderer));
+	renderer_draw(&renderer);
+	renderer_end_loop(&renderer);
 	return TRUE;
 }
 
 int game_cleanup(game_t *game_p)
 {
-	renderer_end(&(game_p->data.renderer));
+	free(quads);
+	renderer_end(&renderer);
 	return TRUE;
 }

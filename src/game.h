@@ -12,22 +12,11 @@ typedef struct
 	int is_pressed;
 } keyinp_data_t;
 
-/***/
-
-typedef struct
-{
-	GLFWwindow *window;
-	renderer_t renderer;
-} game_data;
-
-/***/
-
 typedef struct
 {
 	int fps;
 	int keys[1024];
 	int width, height;
-	game_data data;
 } game_t;
 
 int game_init(game_t *, int, int);

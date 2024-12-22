@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\glad\glad.c" />
+    <ClCompile Include="include\utils\utils.c" />
     <ClCompile Include="src\engine\collision.c" />
     <ClCompile Include="src\engine\text.c" />
     <ClCompile Include="src\game.c" />

@@ -6,7 +6,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#define MAX_QUAD 1000
+#define MAX_QUAD 5000
 
 static void renderer_get_max(renderer_t *renderer_p)
 {
@@ -254,11 +254,15 @@ void renderer_draw_quadc(renderer_t *renderer_p, texcoords_data tex_coords, Rvec
 	renderer_add_quad(renderer_p, res);
 }
 
-void renderer_draw_quad(renderer_t *renderer_p, unsigned int tex_id, unsigned int local_mat_index)
+void renderer_draw_quad(renderer_t *renderer_p, Rvec3_t color,
+												unsigned int tex_id, unsigned int local_mat_index)
 {
-	renderer_draw_quadc(renderer_p, (texcoords_data) { .offset.x = 1.f, .offset.y = 1.f,
-												.start.x = 0.f, .start.y = 0.f },
-									(Rvec3_t) { 1.f, 1.f, 1.f }, tex_id, local_mat_index);
+	renderer_draw_quadc(renderer_p,
+											(texcoords_data) { .offset.x = 1.f, .offset.y = 1.f,
+																				 .start.x = 0.f, .start.y = 0.f },
+											color,
+											tex_id,
+											local_mat_index);
 }
 
 static void renderer_submit_vert(renderer_t *renderer_p)
