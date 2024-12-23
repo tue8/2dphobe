@@ -9,7 +9,7 @@ int init_collision(collision_data *col_data)
 	return TRUE;
 }
 
-int check_collision(renderer_t *renderer_p, obj_t *a, obj_t *b, collision_data *col_data)
+int check_collision(phobe_renderer *renderer_p, phobe_obj *a, phobe_obj *b, collision_data *col_data)
 {
 	phobe_vec3 a_pos   = { 0.f, 0.f, 0.f };
 	phobe_vec3 b_pos   = { 0.f, 0.f, 0.f };

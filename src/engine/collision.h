@@ -11,6 +11,6 @@ typedef struct
 } collision_data;
 
 int init_collision(collision_data *);
-int check_collision(renderer_t *, obj_t *, obj_t *, collision_data *);
+int check_collision(phobe_renderer *, phobe_obj *, phobe_obj *, collision_data *);
 
 #endif

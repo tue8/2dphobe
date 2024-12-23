@@ -68,16 +68,16 @@ typedef struct
 	unsigned int *texs;
 	int tex_count;
 	debug_data dbg;
-} renderer_t;
+} phobe_renderer;
 
-int renderer_init(renderer_t *, int, int);
-void renderer_draw_quad(renderer_t *, Rvec3_t, unsigned int, unsigned int);
-void renderer_draw_quadc(renderer_t *, texcoords_data, Rvec3_t, unsigned int, unsigned int);
-int renderer_load_tex(renderer_t *, unsigned int *, const char *);
-void renderer_add_local_mat(renderer_t *, mat4, int *);
-void renderer_draw(renderer_t *);
-void renderer_flush(renderer_t *);
-void renderer_end_loop(renderer_t *);
-void renderer_end(renderer_t *);
+int renderer_init(phobe_renderer *, int, int);
+void renderer_draw_quad(phobe_renderer *, Rvec3_t, unsigned int, unsigned int);
+void renderer_draw_quadc(phobe_renderer *, texcoords_data, Rvec3_t, unsigned int, unsigned int);
+int renderer_load_tex(phobe_renderer *, unsigned int *, const char *);
+void renderer_add_local_mat(phobe_renderer *, mat4, int *);
+void renderer_draw(phobe_renderer *);
+void renderer_flush(phobe_renderer *);
+void renderer_end_loop(phobe_renderer *);
+void renderer_end(phobe_renderer *);
 
 #endif

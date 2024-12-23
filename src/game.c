@@ -8,11 +8,11 @@ const int char_margin = 25.f;
 const int quad_size = 5;
 
 GLFWwindow *window;
-renderer_t renderer;
-obj_t *quads;
+phobe_renderer renderer;
+phobe_obj *quads;
 int quad_count = 0;
 
-int game_init(game_t *game_p, int width, int height)
+int game_init(phobe_game *game_p, int width, int height)
 {
 	game_p->width = width;
 	game_p->height = height;
@@ -29,12 +29,12 @@ int game_init(game_t *game_p, int width, int height)
 	if (!res)
 		return FALSE;
 
-	quads = (obj_t *)malloc(sizeof(obj_t) * (width * height) / quad_size);
+	quads = (phobe_obj *)malloc(sizeof(phobe_obj) * (width * height) / quad_size);
 	for (float i = 0.f; i < width; i += quad_size)
 	{
 		for (float j = 0.f; j < height; j += quad_size)
 		{
-			obj_t quad;
+			phobe_obj quad;
 			phobe_vec3 pos = { i, j, 0.f };
 			phobe_vec3 size = { quad_size, quad_size, 0.f };
 			phobe_vec3 color = { 0.f, 1.f, 0.f };
@@ -47,17 +47,17 @@ int game_init(game_t *game_p, int width, int height)
 	return TRUE;
 }
 
-int game_process_input(game_t *game_p, keyinp_data_t *keyinp_p, float dt)
+int game_process_input(phobe_game *game_p, keyinp_data_t *keyinp_p, float dt)
 {
 	return TRUE;
 }
 
-int game_update(game_t *game_p, float dt)
+int game_update(phobe_game *game_p, float dt)
 {
 	return TRUE;
 }
 
-static void render_text_shadow(renderer_t *renderer, char *str,
+static void render_text_shadow(phobe_renderer *renderer, char *str,
 															 phobe_vec3 pos, phobe_vec3 scale)
 {
 	render_text(renderer,
@@ -70,7 +70,7 @@ static void render_text_shadow(renderer_t *renderer, char *str,
 	render_text(renderer, str, TEXT_WHITE, pos, scale);
 }
 
-int game_render(game_t *game_p)
+int game_render(phobe_game *game_p)
 {
 	for (int i = 0; i < quad_count; i++)
 	{
@@ -97,7 +97,7 @@ int game_render(game_t *game_p)
 	return TRUE;
 }
 
-int game_cleanup(game_t *game_p)
+int game_cleanup(phobe_game *game_p)
 {
 	free(quads);
 	renderer_end(&renderer);

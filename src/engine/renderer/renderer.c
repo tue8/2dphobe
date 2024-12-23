@@ -8,18 +8,18 @@
 
 #define MAX_QUAD 5000
 
-static void renderer_get_max(renderer_t *renderer_p)
+static void renderer_get_max(phobe_renderer *renderer_p)
 {
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &(renderer_p->mvars.max_tex));
 	renderer_p->mvars.max_vert = MAX_QUAD * QUAD_VERT;
 }
 
-static void renderer_init_dbg(renderer_t *renderer_p)
+static void renderer_init_dbg(phobe_renderer *renderer_p)
 {
 	renderer_p->dbg.draw_count = 0;
 }
 
-static void renderer_init_vao(renderer_t *renderer_p)
+static void renderer_init_vao(phobe_renderer *renderer_p)
 {
 	glGenVertexArrays(1, &(renderer_p->vao));
 	glGenBuffers(1, &(renderer_p->vbo));
@@ -57,7 +57,7 @@ static void renderer_init_vao(renderer_t *renderer_p)
 	glBindVertexArray(0);
 }
 
-static void renderer_init_mvp(renderer_t *renderer_p)
+static void renderer_init_mvp(phobe_renderer *renderer_p)
 {
 	renderer_p->mvp.local_mat_sp = 0;
 	renderer_p->mvp.local_mat_arr_size = sizeof(mat4) * MAX_QUAD;
@@ -75,7 +75,7 @@ static void renderer_init_mvp(renderer_t *renderer_p)
 					0.f, -1.f, 1.f, renderer_p->mvp.proj);
 }
 
-static void renderer_init_vertices(renderer_t *renderer_p)
+static void renderer_init_vertices(phobe_renderer *renderer_p)
 {
 	renderer_p->vert.vert_size = sizeof(vertex_t) * renderer_p->mvars.max_vert;
 	renderer_p->vert.vert = malloc(renderer_p->vert.vert_size);
@@ -83,7 +83,7 @@ static void renderer_init_vertices(renderer_t *renderer_p)
 	renderer_p->vert.quad_count = 0;
 }
 
-static void renderer_init_textures(renderer_t *renderer_p)
+static void renderer_init_textures(phobe_renderer *renderer_p)
 {
 	int tex_size;
 	tex_size = sizeof(unsigned int) * renderer_p->mvars.max_tex;
@@ -93,7 +93,7 @@ static void renderer_init_textures(renderer_t *renderer_p)
 }
 
 
-int renderer_init(renderer_t *renderer_p, int width, int height)
+int renderer_init(phobe_renderer *renderer_p, int width, int height)
 {
 	renderer_p->width = width;
 	renderer_p->height = height;
@@ -108,13 +108,13 @@ int renderer_init(renderer_t *renderer_p, int width, int height)
 	return TRUE;
 }
 
-static void renderer_draw_call(renderer_t *renderer_p)
+static void renderer_draw_call(phobe_renderer *renderer_p)
 {
 	glBindVertexArray(renderer_p->vao);
 	glDrawArrays(GL_TRIANGLES, 0, QUAD_VERT * renderer_p->vert.quad_count);
 }
 
-static void renderer_set_samplers(renderer_t *renderer_p)
+static void renderer_set_samplers(phobe_renderer *renderer_p)
 {
 	unsigned int texs_loc;
 	int samplers[32];
@@ -125,7 +125,7 @@ static void renderer_set_samplers(renderer_t *renderer_p)
 	glUniform1iv(texs_loc, 32, samplers);
 }
 
-static void renderer_submit_mvp(renderer_t *renderer_p)
+static void renderer_submit_mvp(phobe_renderer *renderer_p)
 {
 	set_uniform_mat4(renderer_p->shader_id, "view", renderer_p->mvp.view);
 	set_uniform_mat4(renderer_p->shader_id, "proj", renderer_p->mvp.proj);
@@ -135,7 +135,7 @@ static void renderer_submit_mvp(renderer_t *renderer_p)
 												, renderer_p->mvp.local_mat_arr);
 }
 
-void renderer_add_local_mat(renderer_t *renderer_p, mat4 local_mat, int *local_mat_index)
+void renderer_add_local_mat(phobe_renderer *renderer_p, mat4 local_mat, int *local_mat_index)
 {
 	if (renderer_p->mvp.local_mat_sp + 1 >= MAX_QUAD)
 		renderer_draw(renderer_p);
@@ -143,20 +143,20 @@ void renderer_add_local_mat(renderer_t *renderer_p, mat4 local_mat, int *local_m
 	*local_mat_index = renderer_p->mvp.local_mat_sp++;
 }
 
-static void renderer_add_quad(renderer_t *renderer_p, vertex_t *quad_data)
+static void renderer_add_quad(phobe_renderer *renderer_p, vertex_t *quad_data)
 {
 	memcpy(renderer_p->vert.vert + (QUAD_VERT * renderer_p->vert.quad_count), quad_data,
 			sizeof(vertex_t) * QUAD_VERT);
 	renderer_p->vert.quad_count++;
 }
 
-static void renderer_submit_textures(renderer_t *renderer_p)
+static void renderer_submit_textures(phobe_renderer *renderer_p)
 {
 	for (int i = 0; i < renderer_p->tex_count; i++)
 		glBindTextureUnit(i, *(renderer_p->texs + i));
 }
 
-void renderer_flush(renderer_t *renderer_p)
+void renderer_flush(phobe_renderer *renderer_p)
 {
 	renderer_p->vert.quad_count = 0;
 	renderer_p->tex_count = 0;
@@ -167,7 +167,7 @@ void renderer_flush(renderer_t *renderer_p)
 	memset(renderer_p->mvp.local_mat_arr, 0, renderer_p->mvp.local_mat_arr_size);
 }
 
-static float get_tex_index(renderer_t *renderer_p, unsigned int tex_id)
+static float get_tex_index(phobe_renderer *renderer_p, unsigned int tex_id)
 {
 	float tex_index;
 	int tex_find;
@@ -243,7 +243,7 @@ static void fill_quad_data(vertex_t *quad, texcoords_data tex_coords, Rvec3_t co
 		color, tex_index, local_mat_index);
 }
 
-void renderer_draw_quadc(renderer_t *renderer_p, texcoords_data tex_coords, Rvec3_t color,
+void renderer_draw_quadc(phobe_renderer *renderer_p, texcoords_data tex_coords, Rvec3_t color,
 										  unsigned int tex_id, unsigned int local_mat_index)
 {
 	vertex_t res[QUAD_VERT];
@@ -254,7 +254,7 @@ void renderer_draw_quadc(renderer_t *renderer_p, texcoords_data tex_coords, Rvec
 	renderer_add_quad(renderer_p, res);
 }
 
-void renderer_draw_quad(renderer_t *renderer_p, Rvec3_t color,
+void renderer_draw_quad(phobe_renderer *renderer_p, Rvec3_t color,
 												unsigned int tex_id, unsigned int local_mat_index)
 {
 	renderer_draw_quadc(renderer_p,
@@ -265,14 +265,14 @@ void renderer_draw_quad(renderer_t *renderer_p, Rvec3_t color,
 											local_mat_index);
 }
 
-static void renderer_submit_vert(renderer_t *renderer_p)
+static void renderer_submit_vert(phobe_renderer *renderer_p)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, renderer_p->vbo);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, renderer_p->vert.quad_count * (QUAD_VERT * sizeof(vertex_t)),
 					renderer_p->vert.vert);
 }
 
-int renderer_load_tex(renderer_t *renderer_p, unsigned int *tex_p, const char *tex_dir)
+int renderer_load_tex(phobe_renderer *renderer_p, unsigned int *tex_p, const char *tex_dir)
 {
 	int width, height, color_channel;
 	unsigned char *data;
@@ -298,7 +298,7 @@ int renderer_load_tex(renderer_t *renderer_p, unsigned int *tex_p, const char *t
 	return TRUE;
 }
 
-void renderer_draw(renderer_t *renderer_p)
+void renderer_draw(phobe_renderer *renderer_p)
 {
 	renderer_submit_vert(renderer_p);
 	bind_shader(renderer_p->shader_id);
@@ -310,12 +310,12 @@ void renderer_draw(renderer_t *renderer_p)
 	renderer_p->dbg.draw_count++;
 }
 
-void renderer_end_loop(renderer_t *renderer_p)
+void renderer_end_loop(phobe_renderer *renderer_p)
 {
 	renderer_p->dbg.draw_count = 0;
 }
 
-void renderer_end(renderer_t *renderer_p)
+void renderer_end(phobe_renderer *renderer_p)
 {
 	free(renderer_p->vert.vert);
 	free(renderer_p->mvp.local_mat_arr);

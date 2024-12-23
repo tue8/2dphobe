@@ -47,7 +47,7 @@ int window_init(GLFWwindow **window_p, char *name, unsigned int width, unsigned 
 	return TRUE;
 }
 
-int window_startgame(game_t *game_p, GLFWwindow *window)
+int window_startgame(phobe_game *game_p, GLFWwindow *window)
 {
 	float last_frame;
 	float last_sec_frame;

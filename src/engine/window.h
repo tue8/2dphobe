@@ -4,6 +4,6 @@
 #include "../game.h"
 
 int window_init(GLFWwindow **, char *, unsigned int, unsigned int);
-int window_startgame(game_t *, GLFWwindow *);
+int window_startgame(phobe_game *, GLFWwindow *);
 
 #endif

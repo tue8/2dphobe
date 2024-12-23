@@ -17,12 +17,12 @@ typedef struct
 	int fps;
 	int keys[1024];
 	int width, height;
-} game_t;
+} phobe_game;
 
-int game_init(game_t *, int, int);
-int game_process_input(game_t *, keyinp_data_t *, float);
-int game_update(game_t *, float);
-int game_render(game_t *);
-int game_cleanup(game_t *);
+int game_init(phobe_game *, int, int);
+int game_process_input(phobe_game *, keyinp_data_t *, float);
+int game_update(phobe_game *, float);
+int game_render(phobe_game *);
+int game_cleanup(phobe_game *);
 
 #endif

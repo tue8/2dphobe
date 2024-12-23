@@ -31,7 +31,7 @@ static void get_res(char **argv, int *w_p, int *h_p)
 
 int main(int argc, char **argv)
 {
-	game_t game;
+	phobe_game game;
 	int width;
 	int height;
 

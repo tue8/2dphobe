@@ -64,13 +64,13 @@ int destroy_shader(unsigned int id)
 
 int init_shader(void *R_void)
 {
-  renderer_t *renderer_p;
+  phobe_renderer *renderer_p;
   char link_buff[512];
   char *fragshader_buff;
   unsigned int vertshader, fragshader;
   
   /* forgive me lord */
-  renderer_p = (renderer_t *)R_void;
+  renderer_p = (phobe_renderer *)R_void;
   vertshader = glCreateShader(GL_VERTEX_SHADER);
   fragshader = glCreateShader(GL_FRAGMENT_SHADER);
   /* will the number of maximum amount of texture slots ever go beyond 2 digits? i dont know :P */

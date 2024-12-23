@@ -42,7 +42,7 @@ static void setup_char(int *i, char c, float x_offset, float y_offset)
 	(*i)++;
 }
 
-int text_init(renderer_t *renderer_p)
+int text_init(phobe_renderer *renderer_p)
 {
 	int row_index;
 
@@ -86,7 +86,7 @@ static texcoords_data find_charcoords(char c)
 	return (texcoords_data) SET_COORDS(0.f, 0.f);
 }
 
-void render_text(renderer_t *renderer_p, char *str, phobe_vec3 color, phobe_vec3 pos, phobe_vec3 scale)
+void render_text(phobe_renderer *renderer_p, char *str, phobe_vec3 color, phobe_vec3 pos, phobe_vec3 scale)
 {
 	for (size_t i = 0; i < strlen(str); ++i)
 	{
