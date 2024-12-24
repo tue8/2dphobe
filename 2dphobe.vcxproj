@@ -21,14 +21,13 @@
   <ItemGroup>
     <ClCompile Include="include\glad\glad.c" />
     <ClCompile Include="include\utils\utils.c" />
-    <ClCompile Include="src\engine\collision.c" />
-    <ClCompile Include="src\engine\text.c" />
-    <ClCompile Include="src\game.c" />
-    <ClCompile Include="src\engine\obj.c" />
+    <ClCompile Include="src\2dphobe\collision.c" />
+    <ClCompile Include="src\2dphobe\text.c" />
+    <ClCompile Include="src\2dphobe\obj.c" />
     <ClCompile Include="src\main.c" />
-    <ClCompile Include="src\engine\renderer\renderer.c" />
-    <ClCompile Include="src\engine\renderer\shader.c" />
-    <ClCompile Include="src\engine\window.c" />
+    <ClCompile Include="src\2dphobe\renderer\renderer.c" />
+    <ClCompile Include="src\2dphobe\renderer\shader.c" />
+    <ClCompile Include="src\2dphobe\phobe.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cglm\affine-mat.h" />
@@ -209,16 +208,15 @@
     <ClInclude Include="include\KHR\khrplatform.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\utils\print.h" />
-    <ClInclude Include="src\engine\collision.h" />
-    <ClInclude Include="src\engine\text.h" />
-    <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\engine\obj.h" />
-    <ClInclude Include="src\engine\renderer\renderer.h" />
-    <ClInclude Include="src\engine\renderer\shader.h" />
+    <ClInclude Include="src\2dphobe\collision.h" />
+    <ClInclude Include="src\2dphobe\text.h" />
+    <ClInclude Include="src\2dphobe\obj.h" />
+    <ClInclude Include="src\2dphobe\renderer\renderer.h" />
+    <ClInclude Include="src\2dphobe\renderer\shader.h" />
     <ClInclude Include="include\utils\assert.h" />
     <ClInclude Include="include\utils\bool.h" />
     <ClInclude Include="include\utils\utils.h" />
-    <ClInclude Include="src\engine\window.h" />
+    <ClInclude Include="src\2dphobe\phobe.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\cglm.lib" />
@@ -226,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\fonts\font.png" />
+    <Image Include="data\textures\default.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />

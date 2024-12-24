@@ -310,6 +310,12 @@ void renderer_draw(phobe_renderer *renderer_p)
 	renderer_p->dbg.draw_count++;
 }
 
+void renderer_start_loop()
+{
+	glClearColor(0.f, 0.f, 0.8f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 void renderer_end_loop(phobe_renderer *renderer_p)
 {
 	renderer_p->dbg.draw_count = 0;

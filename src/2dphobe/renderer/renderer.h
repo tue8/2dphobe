@@ -77,6 +77,7 @@ int renderer_load_tex(phobe_renderer *, unsigned int *, const char *);
 void renderer_add_local_mat(phobe_renderer *, mat4, int *);
 void renderer_draw(phobe_renderer *);
 void renderer_flush(phobe_renderer *);
+void renderer_start_loop();
 void renderer_end_loop(phobe_renderer *);
 void renderer_end(phobe_renderer *);
 

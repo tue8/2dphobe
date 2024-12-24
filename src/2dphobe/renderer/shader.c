@@ -111,7 +111,7 @@ int link_shader(unsigned int id, char *err_buffer)
 
 void set_uniform_mat4(unsigned int shader_id, const char *name, mat4 mat)
 {
-  glUniformMatrix4fv(glGetUniformLocation(shader_id, name), 1, GL_FALSE, mat);
+  glUniformMatrix4fv(glGetUniformLocation(shader_id, name), 1, GL_FALSE, (const GLfloat *)mat);
 }
 
 void set_uniform_4f(unsigned int shader_id, const char *name,

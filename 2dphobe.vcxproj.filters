@@ -21,25 +21,22 @@
     <ClCompile Include="include\glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\renderer\shader.c">
+    <ClCompile Include="src\2dphobe\renderer\shader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\renderer\renderer.c">
+    <ClCompile Include="src\2dphobe\renderer\renderer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game.c">
+    <ClCompile Include="src\2dphobe\phobe.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\window.c">
+    <ClCompile Include="src\2dphobe\obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\obj.c">
+    <ClCompile Include="src\2dphobe\collision.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\collision.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\text.c">
+    <ClCompile Include="src\2dphobe\text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\utils\utils.c">
@@ -578,19 +575,16 @@
     <ClInclude Include="include\GLFW\glfw3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\renderer\shader.h">
+    <ClInclude Include="src\2dphobe\renderer\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\renderer\renderer.h">
+    <ClInclude Include="src\2dphobe\renderer\renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game.h">
+    <ClInclude Include="src\2dphobe\phobe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\obj.h">
+    <ClInclude Include="src\2dphobe\obj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\utils\bool.h">
@@ -602,10 +596,10 @@
     <ClInclude Include="include\utils\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\collision.h">
+    <ClInclude Include="src\2dphobe\collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\text.h">
+    <ClInclude Include="src\2dphobe\text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\utils\print.h">
@@ -618,6 +612,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\fonts\font.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\textures\default.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
